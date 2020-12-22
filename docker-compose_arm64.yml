@@ -1,13 +1,13 @@
 version: '3.1'
 
 services:
-  s3storagebackendserver:
+  s3storagefrontend:
     build:
       context: ./ # Local
       dockerfile: Dockerfile_arm64
-    #      context: https://github.com/elbosso/s3storagebackendserver.git # Build from Github
-    container_name: s3storagebackendserver
-    hostname: s3storagebackendserver
+    #      context: https://github.com/elbosso/s3storagefrontend.git # Build from Github
+    container_name: s3storagefronten
+    hostname: s3storagefrontend
 #    ports:
 #      - 7000:7000
     restart: unless-stopped
@@ -15,8 +15,8 @@ services:
       - environment.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.s3storagebackendserver.rule=Host(`s3storagebackendserver.pi-docker.lab`)"
-      - "traefik.http.services.s3storagebackendserver.loadbalancer.server.port=7000"
+      - "traefik.http.routers.s3storagefrontend.rule=Host(`s3storagefrontend.pi-docker.lab`)"
+      - "traefik.http.services.s3storagefrontend.loadbalancer.server.port=7000"
       - "traefik.docker.network=traefik_proxy"
     networks:
       - traefik_proxy
@@ -24,4 +24,4 @@ services:
 networks:
   traefik_proxy:
     external:
-      name: traefik_proxy
+      name: pi_traefik_proxy
