@@ -117,6 +117,9 @@ public class App {
 		app.post("/upload", ctx -> {
 			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("received upload request");
 			byte[] data=null;
+			java.lang.String accepts=ctx.header("Accept");
+			if(accepts!=null)
+				if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("request specified wanted return as "+accepts);
 			java.lang.String contentType=ctx.contentType();
 			String fileObjKeyName = UUID.randomUUID().toString();
 			java.lang.String s3ContentDisposition=fileObjKeyName;
@@ -200,16 +203,24 @@ public class App {
 					PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, bais,metadata);
 					s3Client.putObject(request);
 					ctx.status(201);
-					ctx.contentType("text/html");
 					//ctx.header("Content-Disposition","filename=\"reply.tsr\"");
 					//ctx.result(new java.io.ByteArrayInputStream(tsr));
 					java.lang.String href=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"download/"+fileObjKeyName;
 					ctx.header("Content-Location",href);
-					ctx.result("<html><head>" +
-							"<link href=\""+href+"\" rel=\"item\" type=\""+metadata.getContentType()+"\" />" +
-							"</head><body>" +
-							"<a href=\""+href+"\">Download/Share</a>" +
-							"</body></html>");
+					if(accepts.equals("text/plain"))
+					{
+						ctx.contentType("text/plain");
+						ctx.result(href);
+					}
+					else
+					{
+						ctx.contentType("text/html");
+						ctx.result("<html><head>" +
+								"<link href=\"" + href + "\" rel=\"item\" type=\"" + metadata.getContentType() + "\" />" +
+								"</head><body>" +
+								"<a href=\"" + href + "\">Download/Share</a>" +
+								"</body></html>");
+					}
 					Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"success","true","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 				}
 				catch (AmazonServiceException ase)
