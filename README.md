@@ -69,4 +69,8 @@ The URL of the uploaded file (to be used to access the file later on or to share
 is contained in the `head` of the HTML page as a `link` element,
 in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Location` header in the response.
 
-
+If the HTTP header `Accepts` is sent with the request having a value of `text/plain`,
+the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
+```shell script
+curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.html 
+```

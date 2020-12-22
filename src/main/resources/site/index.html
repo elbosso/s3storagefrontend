@@ -33,8 +33,11 @@
             <p>The file <em>response.html</em> contains the result of the operation if no error occurred (Signified
                 by the HTTP status code 201).</p>
             <p>The URL of the uploaded file (to be used to access the file later on or to share it with others)
-                is contained within the answer threefold: In the `head` of the HTML page as a `link` element,
-            in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Location` header in the response.</p>
+                is contained within the answer threefold: In the <pre>head</pre> of the HTML page as a <pre>link</pre> element,
+            in the body of the HTML page as a hyperlink (<pre>a</pre>) element and as a <pre>Content-Location</pre> header in the response.</pre>
+            <p>If the HTTP header <em>Accepts</em>is sent with the request having a value of <em>text/plain</em>,
+            the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -H "Accept: text/plain" -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.html</div>
         </div>
     </div>
 
