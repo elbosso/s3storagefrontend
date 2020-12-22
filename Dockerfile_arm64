@@ -1,0 +1,17 @@
+#Build stage
+FROM arm32v7/maven AS build-env
+
+ADD . /s3storagefrontend
+
+WORKDIR s3storagefrontend
+
+RUN mvn -U compile package assembly:single
+
+# Run it
+FROM bellsoft/liberica-openjdk-alpine
+
+COPY --from=build-env /s3storagefrontend/target/*-jar-with-dependencies.jar /app/s3storagefrontend.jar
+
+EXPOSE 7000
+
+CMD ["java", "-jar", "/app/s3storagefrontend.jar"]

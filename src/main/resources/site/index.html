@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<title>S3 File Sharing Server</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<body>
+
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+    <!--i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i-->
+    <div class="w3-center">
+        <h4>by Jürgen "EL BOSSO" Key</h4>
+        <h1 class="w3-xxxlarge w3-animate-bottom">S3 File Sharing Server</h1>
+        <div class="w3-padding-16">
+            <a class="w3-btn w3-large w3-theme-dark w3-hover-teal" href="https://github.com/elbosso/s3storagefrontend">Visit project website!</a>
+        </div>
+        <div class="w3-padding-16">
+            <a class="w3-btn w3-large w3-theme-dark w3-hover-teal" href="https://elbosso.github.io">Visit authors website!</a>
+        </div>
+    </div>
+</header>
+
+<div class="w3-row-padding w3-margin-top">
+    <div class="w3-twothird">
+        <div class="w3-card w3-container" style="min-height:500px">
+            <h3>Usage</h3>
+            <p>Any file can be sent using a HTTP POST request as multipart form data
+                (for example from a file upload form inside a web page):</p>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.html</div>
+            <p>The file <em>response.html</em> contains the result of the operation if no error occurred (Signified
+                by the HTTP status code 201).</p>
+            <p>The URL of the uploaded file (to be used to access the file later on or to share it with others)
+                is contained within the answer threefold: In the `head` of the HTML page as a `link` element,
+            in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Location` header in the response.</p>
+        </div>
+    </div>
+
+    <div class="w3-third" style="min-height:500px">
+        <div class="w3-card-padding w3-container">
+            <h3>Upload File...</h3>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <div class="w3-row-padding w3-margin-top"><input name="data" type="file"></div>
+                <div class="w3-row-padding w3-margin-top"><input type="submit" title="Upload File" value="Upload File"/></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-theme-dark">
+    <!--h3>Footer</h3-->
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+    <!--div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+        Go To Top&nbsp;
+        <a class="w3-text-white" href="#myHeader">
+    <i class="fa fa-chevron-circle-up"></i></a>
+    </div>
+    <p>Remember to check out our&nbsp;&nbsp;<a href="w3css_references.asp" class="w3-btn w3-theme" target="_blank">W3.CSS Reference</a></p-->
+</footer>
+
+
+</body>
+</html>
