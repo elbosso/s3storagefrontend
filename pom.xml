@@ -39,6 +39,10 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
   <groupId>de.elbosso.tools</groupId>
   <artifactId>s3storagefrontend</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+    <scm>
+        <developerConnection>scm:git:https://github.com/elbosso/s3storagefrontend.git</developerConnection>
+      <tag>HEAD</tag>
+  </scm>
     <properties>
         <project.custom.encoding>UTF-8</project.custom.encoding>
         <project.custom.java.version>11</project.custom.java.version>
@@ -48,6 +52,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
         <project.main.class>de.elbosso.tools.s3storagefrontend.rest.App</project.main.class>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+      <project.scm.id>elbossos-github</project.scm.id>
     </properties>
   <build>
         <pluginManagement>
@@ -88,7 +93,15 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
             </plugins>
         </pluginManagement>
       <plugins>
-          <!-- https://github.com/tomasbjerre/git-changelog-maven-plugin/blob/master/git-changelog-maven-plugin-example/pom.xml -->
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <preparationGoals>package assembly:single</preparationGoals>
+                </configuration>
+            </plugin>
+         <!-- https://github.com/tomasbjerre/git-changelog-maven-plugin/blob/master/git-changelog-maven-plugin-example/pom.xml -->
           <plugin>
             <groupId>se.bjurr.gitchangelog</groupId>
             <artifactId>git-changelog-maven-plugin</artifactId>
@@ -169,13 +182,13 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
         <dependency>
             <groupId>de.elbosso</groupId>
             <artifactId>util</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.elbosso</groupId>
             <artifactId>util_i18n</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
@@ -219,4 +232,11 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
         </dependency>
 
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Internal repo</name>
+            <url>file:///tmp/</url>
+        </repository>
+    </distributionManagement>
 </project>
