@@ -33,15 +33,14 @@ WEG SIE AUCH IMMER DURCH DIE BENUTZUNG DIESER SOFTWARE ENTSTANDEN SIND, SOGAR,
 WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 -->
 <!-- build with: mvn -U package assembly:single -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.elbosso.tools</groupId>
   <artifactId>s3storagefrontend</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
     <scm>
         <developerConnection>scm:git:https://github.com/elbosso/s3storagefrontend.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>s3storagefrontend-1.0.0</tag>
   </scm>
     <properties>
         <project.custom.encoding>UTF-8</project.custom.encoding>
