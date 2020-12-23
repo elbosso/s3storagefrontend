@@ -74,3 +74,8 @@ the service does only return the plain URL to the uploaded file for easier integ
 ```shell script
 curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.html 
 ```
+
+## Expiration of documents
+
+At the moment the bucket given in _environment.env_ must exist. However it is not necessary to
+configure any expiration times upon it - after starting the service, the bucket is configured accordingly.
