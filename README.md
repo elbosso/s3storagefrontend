@@ -55,6 +55,37 @@ All configuration is done vie _environment.env_ - just copy and rename _environm
 and customize its contents. Monitoring is configured by copying _src/main/resources/influxdb_micrometer.proprerties_template_
 to _src/main/resources/influxdb_micrometer.proprerties_ and customizing it.
 
+## Where to get an S3 instance for playing?
+
+You could use [Min.IO](https://github.com/minio/minio)
+for your first steps -i even prepared a small `docker-compose.yml` as stasrrting point to host your own instance:
+
+```
+version: '3.1'
+
+services:
+  app:
+    image: minio/minio
+    env_file: ./minio.env
+    volumes:
+     - ./data:/data
+    container_name: minio
+    hostname: minio
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minio.rule=Host(`minio.pi-docker.lab`)"
+      - "traefik.http.services.minio.loadbalancer.server.port=9000"
+      - "traefik.docker.network=pi_traefik_proxy"
+    networks:
+      - traefik_proxy
+    command:  minio server /data
+
+networks:
+  traefik_proxy:
+    external:
+      name: pi_traefik_proxy
+```
+
 ## Working with it
 
 Just issue a HTTP POST request as multipart form data
