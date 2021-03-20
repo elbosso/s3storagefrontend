@@ -36,6 +36,13 @@ Changelog of this project.
         
 
         
+**names of the resulting files (Content Disposition) after upload are now derived from the name of the uploaded file**
+
+            
+
+[3d0550fe969f2c0](https://github.com/elbosso/s3storagefrontend/commit/3d0550fe969f2c0) Jürgen Key *2021-03-20 17:04:12*
+
+  
 **some more refactoring**
 
             

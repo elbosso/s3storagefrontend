@@ -87,17 +87,6 @@ public class UploadHandler extends Object implements Handler
 		{
 			try
 			{
-				// Create a rule to delete objects after 1 days.
-				// The rule applies to all objects with the tag "archive" set to "true".
-				BucketLifecycleConfiguration.Rule rule2 = new BucketLifecycleConfiguration.Rule()
-						.withId("delete rule")
-						.withExpirationInDays(1)
-						.withStatus(BucketLifecycleConfiguration.ENABLED);
-
-				// Add the rules to a new BucketLifecycleConfiguration.
-				BucketLifecycleConfiguration configuration = new BucketLifecycleConfiguration()
-						.withRules(Arrays.asList(rule2));
-
 				Regions clientRegion = Regions.DEFAULT_REGION;
 				AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
 //							.withRegion(clientRegion)
@@ -106,8 +95,6 @@ public class UploadHandler extends Object implements Handler
 //							.withClientConfiguration(clientConfiguration)
 						.build();
 				String bucketName = System.getenv("AWS_BUCKET_NAME");
-				// Save the configuration.
-				s3Client.setBucketLifecycleConfiguration(bucketName, configuration);
 
 				java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(data);
 				// Upload a file as a new object with ContentType and title specified.

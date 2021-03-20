@@ -93,7 +93,7 @@ networks:
 Just issue a HTTP POST request as multipart form data
 (for example from a file upload from inside a web page):
 ```shell script
-curl -F "data=@<some_file>" http://<host>:<port>/upload -o result.html 
+curl -J -O -F "data=@<some_file>" http://<host>:<port>/upload
 ``` 
 
 A HTTP status code of 201 signifies success. If the operation is successful, the response
@@ -105,13 +105,13 @@ in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Loca
 If the HTTP header `Accept` is sent with the request having a value of `text/plain`,
 the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
 ```shell script
-curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.txt 
+curl -J -O -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload 
 ```
 
 If the HTTP header `Accept` is sent with the request having a value of `application/json`,
 the service does return a json document with helpful information - for example:</p>
 ```shell script
-curl -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.json 
+curl -J -O -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload 
 ```
 
 would return something on the lines of:
