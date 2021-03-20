@@ -50,6 +50,20 @@ Changelog of this project.
         
 
         
+**re #4**
+
+            
+
+[d99a74abc40325e](https://github.com/elbosso/s3storagefrontend/commit/d99a74abc40325e) Jürgen Key *2021-03-20 09:28:21*
+
+  
+**re #4**
+
+            
+
+[3d7998aa09ee5c6](https://github.com/elbosso/s3storagefrontend/commit/3d7998aa09ee5c6) Jürgen Key *2021-03-20 09:24:58*
+
+  
 **fixes #4**
 
             
