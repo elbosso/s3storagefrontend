@@ -29,6 +29,13 @@ Changelog of this project.
         
 
         
+**changelog management/generation fixed**
+
+            
+
+[a34710db3679210](https://github.com/elbosso/s3storagefrontend/commit/a34710db3679210) Jürgen Key *2021-03-20 08:44:20*
+
+  
 **changelog management**
 
             
