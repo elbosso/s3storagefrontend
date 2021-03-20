@@ -116,7 +116,6 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
                   <templateFile>changelog.mustache</templateFile>
                   <readableTagName>-([^-]+?)$</readableTagName>
                   <file>CHANGELOG.md</file>
-                    <fromCommit>6fd44a0138048518c1940e11848ec267e2cb4195</fromCommit>
                 </configuration>
               </execution>
             </executions>

@@ -3,3 +3,4 @@ environment.env
 target
 .idea
 *~
+/.okhttpcache/
