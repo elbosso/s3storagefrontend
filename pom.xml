@@ -37,7 +37,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.elbosso.tools</groupId>
   <artifactId>s3storagefrontend</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
     <scm>
         <developerConnection>scm:git:https://github.com/elbosso/s3storagefrontend.git</developerConnection>
       <tag>s3storagefrontend-1.1.0</tag>
