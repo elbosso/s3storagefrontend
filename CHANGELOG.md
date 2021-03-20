@@ -31,6 +31,38 @@ Changelog of this project.
 
  
         
+            
+### GitHub [#8](https://github.com/elbosso/s3storagefrontend/issues/8) make the duration files are kept for configurable with a default of one day
+            
+            
+        
+        
+
+        
+**re #8**
+
+            
+
+[ffd6d451d60a76e](https://github.com/elbosso/s3storagefrontend/commit/ffd6d451d60a76e) Jürgen Key *2021-03-20 17:50:03*
+
+  
+**re #8**
+
+            
+
+[80a34edc0f00c4d](https://github.com/elbosso/s3storagefrontend/commit/80a34edc0f00c4d) Jürgen Key *2021-03-20 17:46:33*
+
+  
+**fixes #8**
+
+            
+
+[8f4274fac96f94e](https://github.com/elbosso/s3storagefrontend/commit/8f4274fac96f94e) Jürgen Key *2021-03-20 17:45:44*
+
+  
+
+ 
+        
         
 ### No issue
         

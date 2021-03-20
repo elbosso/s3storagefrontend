@@ -18,6 +18,7 @@ import org.apache.log4j.Level;
 import java.util.Arrays;
 
 public class App {
+	private final static java.lang.String OLDRULEID="delete rule";
 	private final static java.lang.String RULEID="de.elbosso.tools.s3storagefrontend.rest.App.RULEID";
 	private static final java.lang.String EXPIRATIONENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.expirationInDays";
 	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(App.class);
@@ -48,6 +49,7 @@ public class App {
 		if(rules==null)
 			rules=new java.util.LinkedList();
 		BucketLifecycleConfiguration.Rule expirationRule = null;
+		BucketLifecycleConfiguration.Rule oldRule = null;
 		for(BucketLifecycleConfiguration.Rule rule:rules)
 		{
 			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(rule.getId());
@@ -56,9 +58,14 @@ public class App {
 			if(RULEID.equals(rule.getId()))
 			{
 				expirationRule=rule;
-				break;
+			}
+			else if(OLDRULEID.equals(rule.getId()))
+			{
+				oldRule=rule;
 			}
 		}
+		if(oldRule!=null)
+			rules.remove(oldRule);
 		if(expirationRule!=null)
 			rules.remove(expirationRule);
 
