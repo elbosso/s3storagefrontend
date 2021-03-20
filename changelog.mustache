@@ -1,26 +1,30 @@
-          # Changelog
+# Changelog
 
 Changelog of this project.
 
 {{#tags}}
- {{#issues}}
-  {{#hasIssue}}
-   {{#hasLink}}
-   {{/hasLink}}
-   {{^hasLink}}
-   {{/hasLink}}
-  {{/hasIssue}}
-  {{^hasIssue}}
-  {{/hasIssue}}
+## {{name}}
+    {{#issues}}
+        {{#hasIssue}}
+            {{#hasLink}}
+### {{name}} [{{issue}}]({{link}}) {{title}}
+            {{/hasLink}}
+            {{^hasLink}}
+### {{name}} {{issue}} {{title}}
+            {{/hasLink}}
+        {{/hasIssue}}
+        {{^hasIssue}}
+### {{name}}
+        {{/hasIssue}}
 
-  {{#commits}}
+        {{#commits}}
 **{{{messageTitle}}}**
 
-{{#messageBodyItems}}
- * {{.}}
-{{/messageBodyItems}}
+            {{#messageBodyItems}}
+* {{.}}
+            {{/messageBodyItems}}
 
-[{{hash}}](https://github.com/<user>/<project>>/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+[{{hash}}](https://github.com/elbosso/s3storagefrontend/commit/{{hash}}) {{authorName}} *{{commitTime}}*
 
   {{/commits}}
 

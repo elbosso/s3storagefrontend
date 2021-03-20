@@ -104,7 +104,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
           <plugin>
             <groupId>se.bjurr.gitchangelog</groupId>
             <artifactId>git-changelog-maven-plugin</artifactId>
-            <version>1.60</version>
+            <version>1.67</version>
             <executions>
               <execution>
                 <id>GenerateGitChangelogTemplateFromFileAndToken</id>
@@ -116,6 +116,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
                   <templateFile>changelog.mustache</templateFile>
                   <readableTagName>-([^-]+?)$</readableTagName>
                   <file>CHANGELOG.md</file>
+                    <fromCommit>6fd44a0138048518c1940e11848ec267e2cb4195</fromCommit>
                 </configuration>
               </execution>
             </executions>
