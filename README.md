@@ -88,6 +88,8 @@ networks:
 
 ## Working with it
 
+### Upload
+
 Just issue a HTTP POST request as multipart form data
 (for example from a file upload from inside a web page):
 ```shell script
@@ -104,6 +106,26 @@ If the HTTP header `Accepts` is sent with the request having a value of `text/pl
 the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
 ```shell script
 curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.html 
+```
+
+### Retrieval
+
+Once the user has a valid URL, accessing the file is as easy as</p>
+```shell script
+curl -O -J http://<host>:<port>/<url></div>
+```
+or alternatively using
+`wget:`
+```shell script
+wget http://<host>:<port>/<url> --content-disposition
+```
+
+### Deletion
+
+Deleting a file explicitly before the configured timespan is up is almost as easy:
+All the user needs to do that is the UUID contained in the URL:
+```shell script
+curl -X DELETE http://<host>:<port>/delete/<uuid>
 ```
 
 ## Expiration of documents
