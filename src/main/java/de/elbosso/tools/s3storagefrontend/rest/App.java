@@ -94,21 +94,42 @@ public class App {
 
 // Download file
 				GetObjectRequest rangeObjectRequest = new GetObjectRequest(bucketName, fileObjKeyName);
-				S3Object objectPortion = s3Client.getObject(rangeObjectRequest);
+				if(s3Client.doesObjectExist(bucketName, fileObjKeyName))
+				{
+					try
+					{
+						S3Object objectPortion = s3Client.getObject(rangeObjectRequest);
 
-				java.io.InputStream is=objectPortion.getObjectContent();
-				java.io.ByteArrayOutputStream baos=new java.io.ByteArrayOutputStream();
-				de.elbosso.util.Utilities.copyBetweenStreams(is,baos,true);
-				byte[] content=baos.toByteArray();
-				ctx.status(201);
-				ctx.contentType(objectPortion.getObjectMetadata().getContentType());
-				ctx.header("Content-Disposition","filename=\""+objectPortion.getObjectMetadata().getContentDisposition()+"\"");
-				ctx.result(new java.io.ByteArrayInputStream(content));
-				Metrics.counter("s3storagefrontend.get", "resourcename","/download","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+						java.io.InputStream is = objectPortion.getObjectContent();
+						java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+						de.elbosso.util.Utilities.copyBetweenStreams(is, baos, true);
+						byte[] content = baos.toByteArray();
+						ctx.status(201);
+						ctx.contentType(objectPortion.getObjectMetadata().getContentType());
+						ctx.header("Content-Disposition", "filename=\"" + objectPortion.getObjectMetadata().getContentDisposition() + "\"");
+						ctx.result(new java.io.ByteArrayInputStream(content));
+						Metrics.counter("s3storagefrontend.get", "resourcename", "/download", "remoteAddr", ctx.req.getRemoteAddr(), "remoteHost", ctx.req.getRemoteHost(), "localAddr", ctx.req.getLocalAddr(), "localName", ctx.req.getLocalName()).increment();
+					}
+					catch(com.amazonaws.services.s3.model.AmazonS3Exception axp)
+					{
+						ctx.status(axp.getStatusCode());
+						ctx.result(axp.getMessage());
+						if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error(axp.getMessage());
+						Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus",java.lang.Integer.toString(axp.getStatusCode()),"error",axp.getMessage(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+					}
+				}
+				else
+				{
+					ctx.status(404);
+					ctx.result("The specified key does not exist ("+fileObjKeyName+")!");
+					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
+					Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus","404","error","object key does not exist","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				}
 			}
 			else
 			{
 				ctx.status(500);
+				ctx.result("request is not multipart/form-data ");
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
 				Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus","500","error","uuid not set","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
@@ -175,7 +196,7 @@ public class App {
 					// The rule applies to all objects with the tag "archive" set to "true".
 					BucketLifecycleConfiguration.Rule rule2 = new BucketLifecycleConfiguration.Rule()
 							.withId("delete rule")
-							.withExpirationInDays(3650)
+							.withExpirationInDays(1)
 							.withStatus(BucketLifecycleConfiguration.ENABLED);
 
 					// Add the rules to a new BucketLifecycleConfiguration.
@@ -199,8 +220,13 @@ public class App {
 					metadata.setContentDisposition(s3ContentDisposition);
 					metadata.setContentType(s3ContentType);
 					metadata.setContentLength(data.length);
+
 					//					metadata.addUserMetadata("title", "someTitle");
 					PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, bais,metadata);
+					//https://docs.aws.amazon.com/AmazonS3/latest/userguide/tagging-managing.html
+					java.util.List<Tag> tags = new java.util.ArrayList<Tag>();
+					tags.add(new Tag("archive", "true"));
+					request.setTagging(new ObjectTagging(tags));
 					s3Client.putObject(request);
 					ctx.status(201);
 					//ctx.header("Content-Disposition","filename=\"reply.tsr\"");
@@ -226,6 +252,7 @@ public class App {
 				catch (AmazonServiceException ase)
 				{
 					ctx.status(500);
+					ctx.result(ase.getMessage());
 					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Caught an AmazonServiceException, which " + "means your request made it "
 							+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
 					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Error Message:    " + ase.getMessage());
@@ -239,6 +266,7 @@ public class App {
 				catch (AmazonClientException ace)
 				{
 					ctx.status(500);
+					ctx.result(ace.getMessage());
 					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Caught an AmazonClientException, which " + "means the client encountered " + "an internal error while trying to "
 							+ "communicate with S3, " + "such as not being able to access the network.");
 					if(EXCEPTION_LOGGER.isEnabledFor(Priority.ERROR))EXCEPTION_LOGGER.error(ace.getMessage(),ace);
@@ -247,6 +275,7 @@ public class App {
 				catch(java.lang.Throwable t)
 				{
 					ctx.status(500);
+					ctx.result(t.getMessage());
 					EXCEPTION_LOGGER.error(t.getMessage(),t);
 					Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"error",(t.getMessage()!=null?t.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 				}
@@ -257,6 +286,7 @@ public class App {
 			else
 			{
 				ctx.status(500);
+				ctx.result("general error");
 			}
 		});
 		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for storing data: /upload (allowed methods: POST)");
