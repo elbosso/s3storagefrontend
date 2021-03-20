@@ -119,20 +119,38 @@ public class UploadHandler extends Object implements Handler
 				ctx.status(201);
 				//ctx.header("Content-Disposition","filename=\"reply.tsr\"");
 				//ctx.result(new java.io.ByteArrayInputStream(tsr));
-				java.lang.String href=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"download/"+fileObjKeyName;
-				ctx.header("Content-Location",href);
+				java.lang.String downloadHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"download/"+fileObjKeyName;
+				java.lang.String deleteHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"delete/"+fileObjKeyName;
+				ctx.header("Content-Location",downloadHref);
 				if(accepts.equals("text/plain"))
 				{
 					ctx.contentType("text/plain");
-					ctx.result(href);
+					ctx.result(downloadHref);
+				}
+				if(accepts.equals("application/json"))
+				{
+					ctx.contentType("application/json");
+					java.util.Map<java.lang.String,java.lang.Object> map=new java.util.HashMap();
+					java.util.Map<java.lang.String,java.lang.String> downloadmap=new java.util.HashMap();
+					java.util.Map<java.lang.String,java.lang.String> deletemap=new java.util.HashMap();
+					map.put("download",downloadmap);
+					downloadmap.put("href",downloadHref);
+					downloadmap.put("wget","wget "+downloadHref+" --content-disposition");
+					downloadmap.put("curl","curl -O -J "+downloadHref);
+					map.put("delete",deletemap);
+					deletemap.put("href",deleteHref);
+					deletemap.put("wget","wget --method=DELETE "+deleteHref);
+					deletemap.put("curl","curl -X DELETE "+deleteHref);
+					map.put("uuid",fileObjKeyName);
+					ctx.json(map);
 				}
 				else
 				{
 					ctx.contentType("text/html");
 					ctx.result("<html><head>" +
-							"<link href=\"" + href + "\" rel=\"item\" type=\"" + metadata.getContentType() + "\" />" +
+							"<link href=\"" + downloadHref + "\" rel=\"item\" type=\"" + metadata.getContentType() + "\" />" +
 							"</head><body>" +
-							"<a href=\"" + href + "\">Download/Share</a>" +
+							"<a href=\"" + downloadHref + "\">Download/Share</a>" +
 							"</body></html>");
 				}
 				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"success","true","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();

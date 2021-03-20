@@ -6,6 +6,31 @@ Changelog of this project.
 ## Unreleased
     
         
+        
+### No issue
+        
+
+        
+**release fxxx-up**
+
+            
+
+[e88693810f06ffb](https://github.com/elbosso/s3storagefrontend/commit/e88693810f06ffb) Jürgen Key *2021-03-20 09:45:40*
+
+  
+**[maven-release-plugin] prepare for next development iteration**
+
+            
+
+[e32706dd434b487](https://github.com/elbosso/s3storagefrontend/commit/e32706dd434b487) Jürgen Key *2021-03-20 09:45:05*
+
+  
+
+ 
+
+## 1.2.0
+    
+        
             
 ### GitHub [#2](https://github.com/elbosso/s3storagefrontend/issues/2) improve error handling
             
@@ -97,6 +122,13 @@ Changelog of this project.
         
 
         
+**[maven-release-plugin] prepare release s3storagefrontend-1.2.0**
+
+            
+
+[9e507ca030589f4](https://github.com/elbosso/s3storagefrontend/commit/9e507ca030589f4) Jürgen Key *2021-03-20 09:45:02*
+
+  
 **release fxxx-up**
 
             

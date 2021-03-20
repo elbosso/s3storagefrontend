@@ -105,7 +105,7 @@ in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Loca
 If the HTTP header `Accepts` is sent with the request having a value of `text/plain`,
 the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
 ```shell script
-curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.html 
+curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.txt 
 ```
 
 ### Retrieval
