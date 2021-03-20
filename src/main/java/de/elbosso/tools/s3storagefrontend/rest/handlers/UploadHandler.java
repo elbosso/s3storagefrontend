@@ -131,10 +131,12 @@ public class UploadHandler extends Object implements Handler
 				ctx.header("Content-Location",downloadHref);
 				if(accepts.equals("text/plain"))
 				{
-					ctx.contentType("text/plain");
+					ctx.contentType(accepts);
+					String cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".txt";
+					ctx.header("Content-Disposition", "filename=\"" + cd + "\"");
 					ctx.result(downloadHref);
 				}
-				if(accepts.equals("application/json"))
+				else if(accepts.equals("application/json"))
 				{
 					ctx.contentType("application/json");
 					java.util.Map<java.lang.String,java.lang.Object> map=new java.util.HashMap();
@@ -149,11 +151,15 @@ public class UploadHandler extends Object implements Handler
 					deletemap.put("wget","wget --method=DELETE "+deleteHref);
 					deletemap.put("curl","curl -X DELETE "+deleteHref);
 					map.put("uuid",fileObjKeyName);
+					String cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".json";
+					ctx.header("Content-Disposition", "filename=\"" + cd + "\"");
 					ctx.json(map);
 				}
 				else
 				{
 					ctx.contentType("text/html");
+					String cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".html";
+					ctx.header("Content-Disposition", "filename=\"" + cd + "\"");
 					ctx.result("<html><head>" +
 							"<link href=\"" + downloadHref + "\" rel=\"item\" type=\"" + metadata.getContentType() + "\" />" +
 							"</head><body>" +

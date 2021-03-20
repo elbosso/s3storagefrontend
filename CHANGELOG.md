@@ -14,6 +14,13 @@ Changelog of this project.
         
 
         
+**fixes #6**
+
+            
+
+[cd15e2f05b4e4d7](https://github.com/elbosso/s3storagefrontend/commit/cd15e2f05b4e4d7) Jürgen Key *2021-03-20 14:35:27*
+
+  
 **re #6**
 
             
@@ -29,6 +36,13 @@ Changelog of this project.
         
 
         
+**some more refactoring**
+
+            
+
+[0f13b307079a70b](https://github.com/elbosso/s3storagefrontend/commit/0f13b307079a70b) Jürgen Key *2021-03-20 16:55:33*
+
+  
 **release fxxx-up**
 
             
