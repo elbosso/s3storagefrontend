@@ -42,6 +42,10 @@
             <p>If the HTTP header <em>Accept</em> is sent with the request having a value of <em>text/plain</em>,
             the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
             <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -H "Accept: text/plain" -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.txt</div>
+            <p>If the HTTP header <em>Accept</em> is sent with the request having a value of <em>application/json</em>,
+            the service does return a json document with helpful information - for example:</p>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.json</div>
+            <p>would return something on the lines of <a href="sample.json">this.</a></p>
             <p>Once the user has a valid URL, accessing the file is as easy as</p>
             <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -O -J http://&lt;host&gt;:&lt;port&gt;/&lt;url&gt;</div>
             <p>or alternatively using

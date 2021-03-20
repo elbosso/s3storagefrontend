@@ -6,6 +6,24 @@ Changelog of this project.
 ## Unreleased
     
         
+            
+### GitHub [#6](https://github.com/elbosso/s3storagefrontend/issues/6) possibility to specify &quot;accept&quot; header as application/json
+            
+            
+        
+        
+
+        
+**re #6**
+
+            
+
+[ee0d8febbad1100](https://github.com/elbosso/s3storagefrontend/commit/ee0d8febbad1100) Jürgen Key *2021-03-20 11:45:23*
+
+  
+
+ 
+        
         
 ### No issue
         

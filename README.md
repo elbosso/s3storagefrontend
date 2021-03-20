@@ -102,10 +102,34 @@ The URL of the uploaded file (to be used to access the file later on or to share
 is contained in the `head` of the HTML page as a `link` element,
 in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Location` header in the response.
 
-If the HTTP header `Accepts` is sent with the request having a value of `text/plain`,
+If the HTTP header `Accept` is sent with the request having a value of `text/plain`,
 the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
 ```shell script
 curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.txt 
+```
+
+If the HTTP header `Accept` is sent with the request having a value of `application/json`,
+the service does return a json document with helpful information - for example:</p>
+```shell script
+curl -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.json 
+```
+
+would return something on the lines of:
+
+```json
+{
+  "download": {
+    "curl": "curl -O -J http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9 --content-disposition",
+    "href": "http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "delete": {
+    "curl": "cirl -X DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget --method=DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "href": "http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "uuid": "1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+}
 ```
 
 ### Retrieval
