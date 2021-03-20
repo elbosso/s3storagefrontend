@@ -24,6 +24,24 @@ Changelog of this project.
 
  
         
+            
+### GitHub [#3](https://github.com/elbosso/s3storagefrontend/issues/3) offer possibility to explicitly delete files
+            
+            
+        
+        
+
+        
+**fixes #3**
+
+            
+
+[642bbc8a19b3084](https://github.com/elbosso/s3storagefrontend/commit/642bbc8a19b3084) Jürgen Key *2021-03-20 08:59:23*
+
+  
+
+ 
+        
         
 ### No issue
         
