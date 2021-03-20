@@ -7,6 +7,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.micrometer.core.instrument.Metrics;
@@ -18,9 +19,15 @@ import java.util.UUID;
 
 public class UploadHandler extends Object implements Handler
 {
+	final static java.lang.String RESOURCENAME="upload";
 	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(UploadHandler.class);
 	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
 
+	public static void register(Javalin app)
+	{
+		app.post("/"+RESOURCENAME, new UploadHandler());
+		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for storing data: /"+RESOURCENAME+" (allowed methods: POST)");
+	}
 	@Override
 	public void handle(@NotNull Context ctx) throws Exception
 	{
@@ -50,7 +57,7 @@ public class UploadHandler extends Object implements Handler
 			else
 			{
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("no field named \"data\" found in form data . corrupted request?");
-				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus","500","error","data not found","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","data not found","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			if(ctx.formParam("s3ContentDisposition")!=null)
 			{
@@ -74,7 +81,7 @@ public class UploadHandler extends Object implements Handler
 		else
 		{
 			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
-			Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus","500","error","encoding","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+			Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","encoding","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 		}
 		if(data!=null)
 		{
@@ -119,8 +126,8 @@ public class UploadHandler extends Object implements Handler
 				ctx.status(201);
 				//ctx.header("Content-Disposition","filename=\"reply.tsr\"");
 				//ctx.result(new java.io.ByteArrayInputStream(tsr));
-				java.lang.String downloadHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"download/"+fileObjKeyName;
-				java.lang.String deleteHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-"upload".length())+"delete/"+fileObjKeyName;
+				java.lang.String downloadHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-RESOURCENAME.length())+DownloadHandler.RESOURCENAME+"/"+fileObjKeyName;
+				java.lang.String deleteHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-RESOURCENAME.length())+DeletionHandler.RESOURCENAME+"/"+fileObjKeyName;
 				ctx.header("Content-Location",downloadHref);
 				if(accepts.equals("text/plain"))
 				{
@@ -153,7 +160,7 @@ public class UploadHandler extends Object implements Handler
 							"<a href=\"" + downloadHref + "\">Download/Share</a>" +
 							"</body></html>");
 				}
-				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"success","true","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"success","true","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			catch (AmazonServiceException ase)
 			{
@@ -167,7 +174,7 @@ public class UploadHandler extends Object implements Handler
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Error Type:       " + ase.getErrorType());
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Request ID:       " + ase.getRequestId());
 				if(EXCEPTION_LOGGER.isEnabledFor(Priority.ERROR))EXCEPTION_LOGGER.error(ase.getMessage(),ase);
-				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ase.getMessage()!=null?ase.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ase.getMessage()!=null?ase.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			catch (AmazonClientException ace)
 			{
@@ -176,14 +183,14 @@ public class UploadHandler extends Object implements Handler
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Caught an AmazonClientException, which " + "means the client encountered " + "an internal error while trying to "
 						+ "communicate with S3, " + "such as not being able to access the network.");
 				if(EXCEPTION_LOGGER.isEnabledFor(Priority.ERROR))EXCEPTION_LOGGER.error(ace.getMessage(),ace);
-				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ace.getMessage()!=null?ace.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ace.getMessage()!=null?ace.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			catch(java.lang.Throwable t)
 			{
 				ctx.status(500);
 				ctx.result(t.getMessage());
 				EXCEPTION_LOGGER.error(t.getMessage(),t);
-				Metrics.counter("s3storagefrontend.post", "resourcename","/upload","httpstatus",java.lang.Integer.toString(ctx.status()),"error",(t.getMessage()!=null?t.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"error",(t.getMessage()!=null?t.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			finally
 			{

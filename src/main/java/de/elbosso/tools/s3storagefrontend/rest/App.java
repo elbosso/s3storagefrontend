@@ -29,12 +29,9 @@ public class App {
 		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("started app - listening on port 7000");
 		app.config.addStaticFiles("/site");
 		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for static contents: /site (allowed methods: GET)");
-		app.get("/download/:uuid", new DownloadHandler());
-		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for download: /download/<id> (allowed methods: GET)");
-		app.post("/upload", new UploadHandler());
-		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for storing data: /upload (allowed methods: POST)");
-		app.delete("/delete/:uuid", new DeletionHandler());
-		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for deletion: /delete/<id> (allowed methods: DELETE)");
+		DownloadHandler.register(app);
+		UploadHandler.register(app);
+		DeletionHandler.register(app);
 		app.before(ctx -> {
 			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(ctx.req.getMethod()+" "+ctx.contentType());
 		});
