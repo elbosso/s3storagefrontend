@@ -107,6 +107,7 @@ public class App {
 						ctx.status(201);
 						ctx.contentType(objectPortion.getObjectMetadata().getContentType());
 						ctx.header("Content-Disposition", "filename=\"" + objectPortion.getObjectMetadata().getContentDisposition() + "\"");
+						if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition"+objectPortion.getObjectMetadata().getContentDisposition());
 						ctx.result(new java.io.ByteArrayInputStream(content));
 						Metrics.counter("s3storagefrontend.get", "resourcename", "/download", "remoteAddr", ctx.req.getRemoteAddr(), "remoteHost", ctx.req.getRemoteHost(), "localAddr", ctx.req.getLocalAddr(), "localName", ctx.req.getLocalName()).increment();
 					}

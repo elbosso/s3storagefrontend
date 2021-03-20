@@ -42,6 +42,24 @@ Changelog of this project.
 
  
         
+            
+### GitHub [#4](https://github.com/elbosso/s3storagefrontend/issues/4) improve documentation/landing page
+            
+            
+        
+        
+
+        
+**fixes #4**
+
+            
+
+[9cb1ae267b3edd6](https://github.com/elbosso/s3storagefrontend/commit/9cb1ae267b3edd6) Jürgen Key *2021-03-20 09:15:36*
+
+  
+
+ 
+        
         
 ### No issue
         

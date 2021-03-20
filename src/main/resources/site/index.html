@@ -43,7 +43,10 @@
             the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
             <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -H "Accept: text/plain" -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.html</div>
             <p>Once the user has a valid URL, accessing the file is as easy as</p>
-            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl http://&lt;host&gt;:&lt;port&gt;/&lt;url&gt; -o &lt;output file&gt;</div>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -O -J http://&lt;host&gt;:&lt;port&gt;/&lt;url&gt;</div>
+            <p>or alternatively using
+            <span class="w3-sand w3-tiny w3-mono">wget</span>:</p>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">wget http://&lt;host&gt;:&lt;port&gt;/&lt;url&gt; --content-disposition</div>
             <p>Deleting a file explicitly before the configured timespan is up is almost as easy:
             All the user needs to do that is the UUID contained in the URL:</p>
             <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -X DELETE http://&lt;host&gt;:&lt;port&gt;/delete/&lt;uuid&gt;</div>
