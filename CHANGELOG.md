@@ -74,11 +74,50 @@ Changelog of this project.
 
  
         
+            
+### GitHub [#5](https://github.com/elbosso/s3storagefrontend/issues/5) code cleanup - refactoring out the handlers into their own classes
+            
+            
+        
+        
+
+        
+**fixes #5**
+
+            
+
+[12958ae8894b548](https://github.com/elbosso/s3storagefrontend/commit/12958ae8894b548) Jürgen Key *2021-03-20 09:39:45*
+
+  
+
+ 
+        
         
 ### No issue
         
 
         
+**release fxxx-up**
+
+            
+
+[3cd5b66afe20988](https://github.com/elbosso/s3storagefrontend/commit/3cd5b66afe20988) Jürgen Key *2021-03-20 09:44:40*
+
+  
+**release fxxx-up**
+
+            
+
+[60d105bf5984711](https://github.com/elbosso/s3storagefrontend/commit/60d105bf5984711) Jürgen Key *2021-03-20 09:44:08*
+
+  
+**[maven-release-plugin] prepare release s3storagefrontend-1.1.0**
+
+            
+
+[b8b0db1c14dc1a6](https://github.com/elbosso/s3storagefrontend/commit/b8b0db1c14dc1a6) Jürgen Key *2021-03-20 09:40:19*
+
+  
 **changelog management/generation fixed**
 
             
