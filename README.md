@@ -185,3 +185,6 @@ existed in its current form at the time the timestamp was created. The four conf
 It is for example possible to use the project 
 [rfc3161timestampingserver](https://github.com/elbosso/rfc3161timestampingserver)
 as timestamping service here.
+
+## Attribution
+The LICENSE holds for all material in this project except for _src/main/resources/site/s3storagefrontend_logo.png_ and _src/main/resources/site/s3storagefrontend_logo.svg_ - they are made available here under the [Creative Commons Attribution-Share Alike 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en) license. They were derived from [File:Server-multiple.svg](https://en.wikipedia.org/wiki/File:Server-multiple.svg).
