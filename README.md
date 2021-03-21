@@ -156,3 +156,30 @@ curl -X DELETE http://<host>:<port>/delete/<uuid>
 
 At the moment the bucket given in _environment.env_ must exist. However it is not necessary to
 configure any expiration times upon it - after starting the service, the bucket is configured accordingly.
+
+## RFC 3161 Timestamps
+
+It is possible to configure the system in a way that allows to fetch cryptographic timestamps
+for the file contents - al the administrator has to do is to specify four configuration items.
+If this is done, the solution offers an additional endpoint named `timestamp` that works
+similarly to the `download` endpoint but does not return the files original content but
+a timestamp according to RFC 3161, making it possible to prove that the archived document
+existed in its current form at the time the timestamp was created. The four configuration items needed are:
+
+* `de.elbosso.tools.s3storagefrontend.rest.App.rfc3161url` The Url the timestamping 
+  service is available under - if not given, the timestamping service is not 
+  available. This is the default.
+* `de.elbosso.tools.s3storagefrontend.rest.App.tspolicyoid` The policy to use for 
+  the timestamping request - if not given, 
+  [0.4.0.2023.1.1](http://oid-info.com/get/0.4.0.2023.1.1) is used - 
+  the default baseline policy
+* `de.elbosso.tools.s3storagefrontend.rest.App.tscertreq` decides wether the reply from
+  the timestamping service should include the certificate - the default here is `true`
+* `de.elbosso.tools.s3storagefrontend.rest.App.binarybodyname` The timestamping service
+  is queried using a `POST` request with a multipart form data - this configuration item
+  specifies the key under which the timestamping query is registered in the form - the
+  default here is `tsq`
+  
+It is for example possible to use the project 
+[rfc3161timestampingserver](https://github.com/elbosso/rfc3161timestampingserver)
+as timestamping service here.
