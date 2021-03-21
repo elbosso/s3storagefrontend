@@ -130,7 +130,7 @@ public class Rfc3161Handler extends Object implements Handler
 						s3ContentDisposition=objectPortion.getObjectMetadata().getContentDisposition();
 						cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".tsr";
 						ctx.status(201);
-						ctx.contentType(objectPortion.getObjectMetadata().getContentType());
+						ctx.contentType("application/timestamp-reply");
 						ctx.header("Content-Disposition", "filename=\"" + cd + "\"");
 						if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition "+cd);
 						ctx.result(new java.io.ByteArrayInputStream(timestampReply));
