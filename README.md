@@ -13,6 +13,8 @@
 [![Github All Releases](https://img.shields.io/github/downloads/elbosso/s3storagefrontend/total.svg)](https://github.com/elbosso/s3storagefrontend)
 [![Website elbosso.github.io](https://img.shields.io/website-up-down-green-red/https/elbosso.github.io.svg)](https://elbosso.github.io/)
 
+![s3storagefrontend_logo](src/main/resources/site/s3storagefrontend_logo.png)
+
 ## Overview
 
 This project offers a frontend to an s3 storage - storing files only for a short time. 
