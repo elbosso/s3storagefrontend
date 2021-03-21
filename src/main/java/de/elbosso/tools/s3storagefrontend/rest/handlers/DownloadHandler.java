@@ -56,7 +56,7 @@ public class DownloadHandler extends java.lang.Object implements Handler
 					ctx.status(201);
 					ctx.contentType(objectPortion.getObjectMetadata().getContentType());
 					ctx.header("Content-Disposition", "filename=\"" + objectPortion.getObjectMetadata().getContentDisposition() + "\"");
-					if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition"+objectPortion.getObjectMetadata().getContentDisposition());
+					if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition "+objectPortion.getObjectMetadata().getContentDisposition());
 					ctx.result(new java.io.ByteArrayInputStream(content));
 					Metrics.counter("s3storagefrontend.get", "resourcename", "/"+RESOURCENAME, "remoteAddr", ctx.req.getRemoteAddr(), "remoteHost", ctx.req.getRemoteHost(), "localAddr", ctx.req.getLocalAddr(), "localName", ctx.req.getLocalName()).increment();
 				}
@@ -79,8 +79,8 @@ public class DownloadHandler extends java.lang.Object implements Handler
 		else
 		{
 			ctx.status(500);
-			ctx.result("request is not multipart/form-data ");
-			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
+			ctx.result("No key specified!");
+			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("No key specified!");
 			Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","uuid not set","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 		}
 	}

@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.BucketLifecycleConfiguration;
 import de.elbosso.tools.s3storagefrontend.rest.handlers.DeletionHandler;
 import de.elbosso.tools.s3storagefrontend.rest.handlers.DownloadHandler;
+import de.elbosso.tools.s3storagefrontend.rest.handlers.Rfc3161Handler;
 import de.elbosso.tools.s3storagefrontend.rest.handlers.UploadHandler;
 import io.javalin.Javalin;
 import io.micrometer.core.instrument.Clock;
@@ -110,6 +111,7 @@ public class App {
 		DownloadHandler.register(app);
 		UploadHandler.register(app);
 		DeletionHandler.register(app);
+		Rfc3161Handler.register(app);
 		app.before(ctx -> {
 			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(ctx.req.getMethod()+" "+ctx.contentType());
 		});
