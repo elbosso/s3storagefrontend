@@ -115,6 +115,7 @@ public class UploadHandler extends Object implements Handler
 				//ctx.result(new java.io.ByteArrayInputStream(tsr));
 				java.lang.String downloadHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-RESOURCENAME.length())+DownloadHandler.RESOURCENAME+"/"+fileObjKeyName;
 				java.lang.String deleteHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-RESOURCENAME.length())+DeletionHandler.RESOURCENAME+"/"+fileObjKeyName;
+				java.lang.String timestampHref=ctx.fullUrl().substring(0,ctx.fullUrl().length()-RESOURCENAME.length())+Rfc3161Handler.RESOURCENAME+"/"+fileObjKeyName;
 				ctx.header("Content-Location",downloadHref);
 				if(accepts.equals("text/plain"))
 				{
@@ -138,6 +139,14 @@ public class UploadHandler extends Object implements Handler
 					deletemap.put("wget","wget --method=DELETE "+deleteHref);
 					deletemap.put("curl","curl -X DELETE "+deleteHref);
 					map.put("uuid",fileObjKeyName);
+					if(System.getenv(Rfc3161Handler.RFC3161URLENVKEY)!=null)
+					{
+						java.util.Map<java.lang.String,java.lang.String> timestampmap=new java.util.HashMap();
+						timestampmap.put("href",timestampHref);
+						timestampmap.put("wget","wget "+timestampHref+" --content-disposition");
+						timestampmap.put("curl","curl -O -J "+timestampHref);
+						map.put("timestamp",timestampmap);
+					}
 					String cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".json";
 					ctx.header("Content-Disposition", "filename=\"" + cd + "\"");
 					ctx.json(map);
@@ -150,7 +159,10 @@ public class UploadHandler extends Object implements Handler
 					ctx.result("<html><head>" +
 							"<link href=\"" + downloadHref + "\" rel=\"item\" type=\"" + metadata.getContentType() + "\" />" +
 							"</head><body>" +
-							"<a href=\"" + downloadHref + "\">Download/Share</a>" +
+							"<a href=\"" + downloadHref + "\">Download/Share Document Content</a>" +
+							(System.getenv(Rfc3161Handler.RFC3161URLENVKEY)!=null?
+							"<br><a href=\"" + timestampHref + "\">Download/Share Timestamp</a>"
+							:"")+
 							"</body></html>");
 				}
 				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"success","true","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();

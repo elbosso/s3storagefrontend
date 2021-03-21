@@ -34,14 +34,30 @@ import java.util.UUID;
 
 public class Rfc3161Handler extends Object implements Handler
 {
+	static final java.lang.String RFC3161URLENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.rfc3161url";
+	private static final java.lang.String RFC3161POLICYOIDENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.tspolicyoid";
+	private static final java.lang.String RFC3161CERTREQENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.tscertreq";
+	private static final java.lang.String RFC3161BINARYBODYNAMEENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.binarybodyname";
+	private static final java.lang.String BASELINETSPOLICYOID="0.4.0.2023.1.1";
 	final static String RESOURCENAME="timestamp";
 	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(Rfc3161Handler.class);
 	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	//for example: http://rfc3161timestampingserver.pi-docker.lab/
+	private java.lang.String rfc3161url;
 
 	public static void register(Javalin app)
 	{
-		app.get("/"+RESOURCENAME+"/:uuid", new Rfc3161Handler());
-		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for storing data: /"+RESOURCENAME+" (allowed methods: POST)");
+		if(System.getenv(RFC3161URLENVKEY)!=null)
+		{
+			app.get("/" + RESOURCENAME + "/:uuid", new Rfc3161Handler(System.getenv(RFC3161URLENVKEY)));
+			if (CLASS_LOGGER.isDebugEnabled())
+				CLASS_LOGGER.debug("added path for gettint RFC3161 Timestamps: /" + RESOURCENAME + " (allowed methods: GET)");
+		}
+	}
+	private Rfc3161Handler(java.lang.String rfc3161url)
+	{
+		super();
+		this.rfc3161url=rfc3161url;
 	}
 	@Override
 	public void handle(@NotNull Context ctx) throws Exception
@@ -73,8 +89,16 @@ public class Rfc3161Handler extends Object implements Handler
 					de.elbosso.util.Utilities.copyBetweenStreams(is, baos, true);
 					byte[] content = baos.toByteArray();
 					org.bouncycastle.tsp.TimeStampRequestGenerator generator = new org.bouncycastle.tsp.TimeStampRequestGenerator();
-					generator.setReqPolicy(new ASN1ObjectIdentifier("0.4.0.2023.1.1"));
-					generator.setCertReq(true);
+					if(System.getenv(RFC3161POLICYOIDENVKEY)==null)
+					{
+						generator.setReqPolicy(new ASN1ObjectIdentifier(BASELINETSPOLICYOID));
+						if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("no policy defined by "+RFC3161POLICYOIDENVKEY+" using the default value "+BASELINETSPOLICYOID+"!");
+					}
+					else
+					{
+						generator.setReqPolicy(new ASN1ObjectIdentifier(System.getenv(RFC3161POLICYOIDENVKEY)));
+					}
+					generator.setCertReq(System.getenv(RFC3161CERTREQENVKEY)!=null?System.getenv(RFC3161CERTREQENVKEY).equalsIgnoreCase("TRUE"):true);
 					java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(content);
 					baos = new java.io.ByteArrayOutputStream();
 					de.elbosso.util.Utilities.copyBetweenStreams(bais, baos, true);
@@ -89,11 +113,11 @@ public class Rfc3161Handler extends Object implements Handler
 					String cd=s3ContentDisposition.substring(0,s3ContentDisposition.lastIndexOf("."))+".tsq";
 
 					CloseableHttpClient client = HttpClientBuilder.create().build();
-					HttpPost post = new HttpPost("http://rfc3161timestampingserver.pi-docker.lab/");
+					HttpPost post = new HttpPost(rfc3161url);
 //
 					MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 					builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-					builder.addBinaryBody("tsq", timestampQuery, ContentType.DEFAULT_BINARY, cd);
+					builder.addBinaryBody(System.getenv(RFC3161BINARYBODYNAMEENVKEY)!=null?System.getenv(RFC3161BINARYBODYNAMEENVKEY):"tsq", timestampQuery, ContentType.DEFAULT_BINARY, cd);
 //
 					HttpEntity entity = builder.build();
 					post.setEntity(entity);

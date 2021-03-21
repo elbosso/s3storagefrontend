@@ -32,6 +32,24 @@ Changelog of this project.
  
         
             
+### GitHub [#7](https://github.com/elbosso/s3storagefrontend/issues/7) add possibility to automatically create a cryptographic timestamp (RFC3161) for an uploaded file
+            
+            
+        
+        
+
+        
+**re #7**
+
+            
+
+[703a46a8eb9850b](https://github.com/elbosso/s3storagefrontend/commit/703a46a8eb9850b) Jürgen Key *2021-03-21 07:26:34*
+
+  
+
+ 
+        
+            
 ### GitHub [#8](https://github.com/elbosso/s3storagefrontend/issues/8) make the duration files are kept for configurable with a default of one day
             
             
