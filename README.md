@@ -163,7 +163,7 @@ It is possible to configure the system in a way that allows to fetch cryptograph
 for the file contents - al the administrator has to do is to specify four configuration items.
 If this is done, the solution offers an additional endpoint named `timestamp` that works
 similarly to the `download` endpoint but does not return the files original content but
-a timestamp according to RFC 3161, making it possible to prove that the archived document
+a timestamp according to [RFC 3161](https://tools.ietf.org/html/rfc3161), making it possible to prove that the archived document
 existed in its current form at the time the timestamp was created. The four configuration items needed are:
 
 * `de.elbosso.tools.s3storagefrontend.rest.App.rfc3161url` The Url the timestamping 
