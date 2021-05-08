@@ -7,6 +7,148 @@ Changelog of this project.
     
         
             
+### GitHub [#6](https://github.com/elbosso/s3storagefrontend/issues/6) possibility to specify &quot;accept&quot; header as application/json
+            
+            
+        
+        
+
+        
+**fixes #6**
+
+            
+
+[cd15e2f05b4e4d7](https://github.com/elbosso/s3storagefrontend/commit/cd15e2f05b4e4d7) Jürgen Key *2021-03-20 14:35:27*
+
+  
+**re #6**
+
+            
+
+[ee0d8febbad1100](https://github.com/elbosso/s3storagefrontend/commit/ee0d8febbad1100) Jürgen Key *2021-03-20 11:45:23*
+
+  
+
+ 
+        
+            
+### GitHub [#7](https://github.com/elbosso/s3storagefrontend/issues/7) add possibility to automatically create a cryptographic timestamp (RFC3161) for an uploaded file
+            
+            
+        
+        
+
+        
+**fixes #7**
+
+            
+
+[d68087d30c577cb](https://github.com/elbosso/s3storagefrontend/commit/d68087d30c577cb) Jürgen Key *2021-03-21 10:00:35*
+
+  
+**re #7**
+
+            
+
+[4ce4e14d40f75c5](https://github.com/elbosso/s3storagefrontend/commit/4ce4e14d40f75c5) Jürgen Key *2021-03-21 09:48:48*
+
+  
+**re #7**
+
+            
+
+[68f325f1e592189](https://github.com/elbosso/s3storagefrontend/commit/68f325f1e592189) Jürgen Key *2021-03-21 08:21:20*
+
+  
+**re #7**
+
+            
+
+[703a46a8eb9850b](https://github.com/elbosso/s3storagefrontend/commit/703a46a8eb9850b) Jürgen Key *2021-03-21 07:26:34*
+
+  
+
+ 
+        
+            
+### GitHub [#8](https://github.com/elbosso/s3storagefrontend/issues/8) make the duration files are kept for configurable with a default of one day
+            
+            
+        
+        
+
+        
+**re #8**
+
+            
+
+[1b410734d3dbfd4](https://github.com/elbosso/s3storagefrontend/commit/1b410734d3dbfd4) Jürgen Key *2021-03-20 17:52:20*
+
+  
+**re #8**
+
+            
+
+[ffd6d451d60a76e](https://github.com/elbosso/s3storagefrontend/commit/ffd6d451d60a76e) Jürgen Key *2021-03-20 17:50:03*
+
+  
+**re #8**
+
+            
+
+[80a34edc0f00c4d](https://github.com/elbosso/s3storagefrontend/commit/80a34edc0f00c4d) Jürgen Key *2021-03-20 17:46:33*
+
+  
+**fixes #8**
+
+            
+
+[8f4274fac96f94e](https://github.com/elbosso/s3storagefrontend/commit/8f4274fac96f94e) Jürgen Key *2021-03-20 17:45:44*
+
+  
+
+ 
+        
+        
+### No issue
+        
+
+        
+**names of the resulting files (Content Disposition) after upload are now derived from the name of the uploaded file**
+
+            
+
+[3d0550fe969f2c0](https://github.com/elbosso/s3storagefrontend/commit/3d0550fe969f2c0) Jürgen Key *2021-03-20 17:04:12*
+
+  
+**some more refactoring**
+
+            
+
+[0f13b307079a70b](https://github.com/elbosso/s3storagefrontend/commit/0f13b307079a70b) Jürgen Key *2021-03-20 16:55:33*
+
+  
+**release fxxx-up**
+
+            
+
+[e88693810f06ffb](https://github.com/elbosso/s3storagefrontend/commit/e88693810f06ffb) Jürgen Key *2021-03-20 09:45:40*
+
+  
+**[maven-release-plugin] prepare for next development iteration**
+
+            
+
+[e32706dd434b487](https://github.com/elbosso/s3storagefrontend/commit/e32706dd434b487) Jürgen Key *2021-03-20 09:45:05*
+
+  
+
+ 
+
+## 1.2.0
+    
+        
+            
 ### GitHub [#2](https://github.com/elbosso/s3storagefrontend/issues/2) improve error handling
             
             
@@ -97,6 +239,13 @@ Changelog of this project.
         
 
         
+**[maven-release-plugin] prepare release s3storagefrontend-1.2.0**
+
+            
+
+[9e507ca030589f4](https://github.com/elbosso/s3storagefrontend/commit/9e507ca030589f4) Jürgen Key *2021-03-20 09:45:02*
+
+  
 **release fxxx-up**
 
             

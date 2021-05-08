@@ -13,6 +13,8 @@
 [![Github All Releases](https://img.shields.io/github/downloads/elbosso/s3storagefrontend/total.svg)](https://github.com/elbosso/s3storagefrontend)
 [![Website elbosso.github.io](https://img.shields.io/website-up-down-green-red/https/elbosso.github.io.svg)](https://elbosso.github.io/)
 
+![s3storagefrontend_logo](src/main/resources/site/s3storagefrontend_logo.png)
+
 ## Overview
 
 This project offers a frontend to an s3 storage - storing files only for a short time. 
@@ -93,7 +95,7 @@ networks:
 Just issue a HTTP POST request as multipart form data
 (for example from a file upload from inside a web page):
 ```shell script
-curl -F "data=@<some_file>" http://<host>:<port>/upload -o result.html 
+curl -J -O -F "data=@<some_file>" http://<host>:<port>/upload
 ``` 
 
 A HTTP status code of 201 signifies success. If the operation is successful, the response
@@ -102,10 +104,34 @@ The URL of the uploaded file (to be used to access the file later on or to share
 is contained in the `head` of the HTML page as a `link` element,
 in the body of the HTML page as a hyperlink (`a`) element and as a `Content-Location` header in the response.
 
-If the HTTP header `Accepts` is sent with the request having a value of `text/plain`,
+If the HTTP header `Accept` is sent with the request having a value of `text/plain`,
 the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
 ```shell script
-curl -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload -o result.html 
+curl -J -O -H "Accept: text/plain" -F "data=@<some_file_name>" http://<host>:<port>/upload 
+```
+
+If the HTTP header `Accept` is sent with the request having a value of `application/json`,
+the service does return a json document with helpful information - for example:</p>
+```shell script
+curl -J -O -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload 
+```
+
+would return something on the lines of:
+
+```json
+{
+  "download": {
+    "curl": "curl -O -J http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9 --content-disposition",
+    "href": "http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "delete": {
+    "curl": "cirl -X DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget --method=DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "href": "http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "uuid": "1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+}
 ```
 
 ### Retrieval
@@ -132,3 +158,33 @@ curl -X DELETE http://<host>:<port>/delete/<uuid>
 
 At the moment the bucket given in _environment.env_ must exist. However it is not necessary to
 configure any expiration times upon it - after starting the service, the bucket is configured accordingly.
+
+## RFC 3161 Timestamps
+
+It is possible to configure the system in a way that allows to fetch cryptographic timestamps
+for the file contents - al the administrator has to do is to specify four configuration items.
+If this is done, the solution offers an additional endpoint named `timestamp` that works
+similarly to the `download` endpoint but does not return the files original content but
+a timestamp according to [RFC 3161](https://tools.ietf.org/html/rfc3161), making it possible to prove that the archived document
+existed in its current form at the time the timestamp was created. The four configuration items needed are:
+
+* `de.elbosso.tools.s3storagefrontend.rest.App.rfc3161url` The Url the timestamping 
+  service is available under - if not given, the timestamping service is not 
+  available. This is the default.
+* `de.elbosso.tools.s3storagefrontend.rest.App.tspolicyoid` The policy to use for 
+  the timestamping request - if not given, 
+  [0.4.0.2023.1.1](http://oid-info.com/get/0.4.0.2023.1.1) is used - 
+  the default baseline policy
+* `de.elbosso.tools.s3storagefrontend.rest.App.tscertreq` decides wether the reply from
+  the timestamping service should include the certificate - the default here is `true`
+* `de.elbosso.tools.s3storagefrontend.rest.App.binarybodyname` The timestamping service
+  is queried using a `POST` request with a multipart form data - this configuration item
+  specifies the key under which the timestamping query is registered in the form - the
+  default here is `tsq`
+  
+It is for example possible to use the project 
+[rfc3161timestampingserver](https://github.com/elbosso/rfc3161timestampingserver)
+as timestamping service here.
+
+## Attribution
+The LICENSE holds for all material in this project except for _src/main/resources/site/s3storagefrontend_logo.png_ and _src/main/resources/site/s3storagefrontend_logo.svg_ - they are made available here under the [Creative Commons Attribution-Share Alike 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en) license. They were derived from [File:Server-multiple.svg](https://en.wikipedia.org/wiki/File:Server-multiple.svg).

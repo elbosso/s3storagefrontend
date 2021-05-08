@@ -1,0 +1,13 @@
+{
+  "download": {
+    "curl": "curl -O -J http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9 --content-disposition",
+    "href": "http://localhost:7000/download/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "delete": {
+    "curl": "cirl -X DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "wget": "wget --method=DELETE http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9",
+    "href": "http://localhost:7000/delete/1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+  },
+  "uuid": "1ecd4d93-d0bb-45e3-8aff-c9bc3662f0c9"
+}

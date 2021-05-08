@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.micrometer.core.instrument.Metrics;
@@ -14,9 +15,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class DownloadHandler extends java.lang.Object implements Handler
 {
+	final static java.lang.String RESOURCENAME="download";
 	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(DownloadHandler.class);
 	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
 
+	public static void register(Javalin app)
+	{
+		app.get("/"+RESOURCENAME+"/:uuid", new DownloadHandler());
+		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for download: /"+RESOURCENAME+"/<id> (allowed methods: GET)");
+	}
 	@Override
 	public void handle(@NotNull Context ctx) throws Exception
 	{
@@ -49,16 +56,16 @@ public class DownloadHandler extends java.lang.Object implements Handler
 					ctx.status(201);
 					ctx.contentType(objectPortion.getObjectMetadata().getContentType());
 					ctx.header("Content-Disposition", "filename=\"" + objectPortion.getObjectMetadata().getContentDisposition() + "\"");
-					if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition"+objectPortion.getObjectMetadata().getContentDisposition());
+					if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("Content-Disposition "+objectPortion.getObjectMetadata().getContentDisposition());
 					ctx.result(new java.io.ByteArrayInputStream(content));
-					Metrics.counter("s3storagefrontend.get", "resourcename", "/download", "remoteAddr", ctx.req.getRemoteAddr(), "remoteHost", ctx.req.getRemoteHost(), "localAddr", ctx.req.getLocalAddr(), "localName", ctx.req.getLocalName()).increment();
+					Metrics.counter("s3storagefrontend.get", "resourcename", "/"+RESOURCENAME, "remoteAddr", ctx.req.getRemoteAddr(), "remoteHost", ctx.req.getRemoteHost(), "localAddr", ctx.req.getLocalAddr(), "localName", ctx.req.getLocalName()).increment();
 				}
 				catch(com.amazonaws.services.s3.model.AmazonS3Exception axp)
 				{
 					ctx.status(axp.getStatusCode());
 					ctx.result(axp.getMessage());
 					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error(axp.getMessage());
-					Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus",java.lang.Integer.toString(axp.getStatusCode()),"error",axp.getMessage(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+					Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(axp.getStatusCode()),"error",axp.getMessage(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 				}
 			}
 			else
@@ -66,15 +73,15 @@ public class DownloadHandler extends java.lang.Object implements Handler
 				ctx.status(404);
 				ctx.result("The specified key does not exist ("+fileObjKeyName+")!");
 				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
-				Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus","404","error","object key does not exist","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+				Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","404","error","object key does not exist","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 		}
 		else
 		{
 			ctx.status(500);
-			ctx.result("request is not multipart/form-data ");
-			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
-			Metrics.counter("s3storagefrontend.get", "resourcename","/download","httpstatus","500","error","uuid not set","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
+			ctx.result("No key specified!");
+			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("No key specified!");
+			Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","uuid not set","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 		}
 	}
 }

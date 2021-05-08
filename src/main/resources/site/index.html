@@ -12,6 +12,10 @@
 <header class="w3-container w3-theme w3-padding" id="myHeader">
     <!--i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i-->
     <div class="w3-center">
+<span class="w3-third">
+<image src="s3storagefrontend_logo.png"/>
+</span>
+<span class="w3-twothird">
         <h4>by Jürgen "EL BOSSO" Key</h4>
         <h1 class="w3-xxxlarge w3-animate-bottom">S3 File Sharing Server</h1>
         <div class="w3-padding-16">
@@ -20,6 +24,7 @@
         <div class="w3-padding-16">
             <a class="w3-btn w3-large w3-theme-dark w3-hover-teal" href="https://elbosso.github.io">Visit authors website!</a>
         </div>
+</span>
     </div>
 </header>
 
@@ -29,7 +34,7 @@
             <h3>Usage</h3>
             <p>Any file can be sent using a HTTP POST request as multipart form data
                 (for example from a file upload form inside a web page):</p>
-            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.html</div>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -J -O -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload</div>
             <p>The file <em>response.html</em> contains the result of the operation if no error occurred (Signified
                 by the HTTP status code 201).</p>
             <p>The URL of the uploaded file (to be used to access the file later on or to share it with others)
@@ -41,7 +46,11 @@
             <span class="w3-sand w3-tiny w3-mono">Content-Location</span> header in the response.</p>
             <p>If the HTTP header <em>Accept</em> is sent with the request having a value of <em>text/plain</em>,
             the service does only return the plain URL to the uploaded file for easier integration into scripts for example:</p>
-            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -H "Accept: text/plain" -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload -o response.html</div>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -J -O -H "Accept: text/plain" -F "data=@&lt;some_file_name&gt;" http://&lt;host&gt;:&lt;port&gt;/upload</div>
+            <p>If the HTTP header <em>Accept</em> is sent with the request having a value of <em>application/json</em>,
+            the service does return a json document with helpful information - for example:</p>
+            <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -J -O -H "Accept: application/json" -F "data=@<some_file_name>" http://<host>:<port>/upload</div>
+            <p>would return something on the lines of <a href="sample.json">this.</a></p>
             <p>Once the user has a valid URL, accessing the file is as easy as</p>
             <div class="w3-panel w3-leftbar w3-sand w3-tiny w3-mono">curl -O -J http://&lt;host&gt;:&lt;port&gt;/&lt;url&gt;</div>
             <p>or alternatively using
