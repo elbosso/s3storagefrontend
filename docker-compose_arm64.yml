@@ -15,8 +15,14 @@ services:
       - environment.env
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.s3storagefrontend-http.entrypoints=http"
+      - "traefik.http.routers.s3storagefrontend-http.rule=Host(`s3storagefrontend.pi-docker.lab`)"
+      - "traefik.http.routers.s3storagefrontend-http.middlewares=s3storagefrontend-https"
+      - "traefik.http.services.s3storagefrontend-http.loadbalancer.server.port=7000"
+      - "traefik.http.middlewares.s3storagefrontend-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.s3storagefrontend.entrypoints=https"
       - "traefik.http.routers.s3storagefrontend.rule=Host(`s3storagefrontend.pi-docker.lab`)"
-      - "traefik.http.services.s3storagefrontend.loadbalancer.server.port=7000"
+      - "traefik.http.routers.s3storagefrontend.tls=true"
       - "traefik.docker.network=traefik_proxy"
     networks:
       - traefik_proxy
