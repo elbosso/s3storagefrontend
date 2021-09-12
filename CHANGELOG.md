@@ -6,6 +6,75 @@ Changelog of this project.
 ## Unreleased
     
         
+        
+### No issue
+        
+
+        
+**logo tweaked**
+
+            
+
+[bdc4d2ea74db726](https://github.com/elbosso/s3storagefrontend/commit/bdc4d2ea74db726) Jürgen Key *2021-03-22 15:51:37*
+
+  
+**logo added to the landing page**
+
+            
+
+[6499ed5f45d6363](https://github.com/elbosso/s3storagefrontend/commit/6499ed5f45d6363) Jürgen Key *2021-03-22 07:06:49*
+
+  
+**attribution for logos**
+
+            
+
+[5630bcda98c2086](https://github.com/elbosso/s3storagefrontend/commit/5630bcda98c2086) Jürgen Key *2021-03-21 18:35:06*
+
+  
+**added logo**
+
+            
+
+[e9bd02fd81b06ac](https://github.com/elbosso/s3storagefrontend/commit/e9bd02fd81b06ac) Jürgen Key *2021-03-21 18:31:04*
+
+  
+**added logo**
+
+            
+
+[4484bd29d70293a](https://github.com/elbosso/s3storagefrontend/commit/4484bd29d70293a) Jürgen Key *2021-03-21 18:30:32*
+
+  
+**Update README.md**
+
+            
+* added link to rfc 3161
+            
+
+[58b7a00e5876ef2](https://github.com/elbosso/s3storagefrontend/commit/58b7a00e5876ef2) Jürgen Key *2021-03-21 16:10:38*
+
+  
+**housekeeping**
+
+            
+
+[08d3aa05b9f441f](https://github.com/elbosso/s3storagefrontend/commit/08d3aa05b9f441f) Jürgen Key *2021-03-21 10:02:28*
+
+  
+**[maven-release-plugin] prepare for next development iteration**
+
+            
+
+[4731ce962f58d72](https://github.com/elbosso/s3storagefrontend/commit/4731ce962f58d72) Jürgen Key *2021-03-21 10:01:48*
+
+  
+
+ 
+
+## 1.3.0
+    
+        
             
 ### GitHub [#6](https://github.com/elbosso/s3storagefrontend/issues/6) possibility to specify &quot;accept&quot; header as application/json
             
@@ -114,6 +183,13 @@ Changelog of this project.
         
 
         
+**[maven-release-plugin] prepare release s3storagefrontend-1.3.0**
+
+            
+
+[14934a529b5d412](https://github.com/elbosso/s3storagefrontend/commit/14934a529b5d412) Jürgen Key *2021-03-21 10:01:44*
+
+  
 **names of the resulting files (Content Disposition) after upload are now derived from the name of the uploaded file**
 
             
