@@ -6,6 +6,24 @@ Changelog of this project.
 ## Unreleased
     
         
+            
+### GitHub [#9](https://github.com/elbosso/s3storagefrontend/issues/9) get rid of log4j and use the new bom dependency
+            
+            
+        
+        
+
+        
+**re #9**
+
+            
+
+[7e7f5817ac8e2c2](https://github.com/elbosso/s3storagefrontend/commit/7e7f5817ac8e2c2) Juergen Key *2022-04-27 15:54:44*
+
+  
+
+ 
+        
         
 ### No issue
         
