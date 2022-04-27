@@ -4,8 +4,8 @@ import java.time.Duration;
 
 public class InfluxConfig extends java.lang.Object implements io.micrometer.influx.InfluxConfig
 {
-	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(InfluxConfig.class);
-	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	private final static org.slf4j.Logger CLASS_LOGGER=org.slf4j.LoggerFactory.getLogger(InfluxConfig.class);
+	private final static org.slf4j.Logger EXCEPTION_LOGGER=org.slf4j.LoggerFactory.getLogger("ExceptionCatcher");
 	java.util.Properties props;
 
 	@Override

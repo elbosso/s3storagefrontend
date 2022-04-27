@@ -20,7 +20,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Priority;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.tsp.TSPAlgorithms;
 import org.jetbrains.annotations.NotNull;
@@ -40,8 +39,8 @@ public class Rfc3161Handler extends Object implements Handler
 	private static final java.lang.String RFC3161BINARYBODYNAMEENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.binarybodyname";
 	private static final java.lang.String BASELINETSPOLICYOID="0.4.0.2023.1.1";
 	final static String RESOURCENAME="timestamp";
-	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(Rfc3161Handler.class);
-	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	private final static org.slf4j.Logger CLASS_LOGGER=org.slf4j.LoggerFactory.getLogger(Rfc3161Handler.class);
+	private final static org.slf4j.Logger EXCEPTION_LOGGER=org.slf4j.LoggerFactory.getLogger("ExceptionCatcher");
 	//for example: http://rfc3161timestampingserver.pi-docker.lab/
 	private java.lang.String rfc3161url;
 
@@ -138,7 +137,7 @@ public class Rfc3161Handler extends Object implements Handler
 					} else {
 						ctx.status(status);
 						ctx.result(response.getStatusLine().getReasonPhrase());
-						if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error(response.getStatusLine().toString());
+						if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error(response.getStatusLine().toString());
 						Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(status),"error",response.getStatusLine().toString(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 					}
 					response.close();
@@ -148,7 +147,7 @@ public class Rfc3161Handler extends Object implements Handler
 				{
 					ctx.status(axp.getStatusCode());
 					ctx.result(axp.getMessage());
-					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error(axp.getMessage());
+					if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error(axp.getMessage());
 					Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(axp.getStatusCode()),"error",axp.getMessage(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 				}
 			}
@@ -156,7 +155,7 @@ public class Rfc3161Handler extends Object implements Handler
 			{
 				ctx.status(404);
 				ctx.result("The specified key does not exist ("+fileObjKeyName+")!");
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
 				Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","404","error","object key does not exist","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 		}

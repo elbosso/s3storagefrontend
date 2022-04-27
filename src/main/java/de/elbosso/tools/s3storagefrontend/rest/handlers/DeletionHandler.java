@@ -8,14 +8,13 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.micrometer.core.instrument.Metrics;
-import org.apache.log4j.Priority;
 import org.jetbrains.annotations.NotNull;
 
 public class DeletionHandler extends Object implements Handler
 {
 	final static java.lang.String RESOURCENAME="delete";
-	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(DeletionHandler.class);
-	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	private final static org.slf4j.Logger CLASS_LOGGER=org.slf4j.LoggerFactory.getLogger(DeletionHandler.class);
+	private final static org.slf4j.Logger EXCEPTION_LOGGER=org.slf4j.LoggerFactory.getLogger("ExceptionCatcher");
 
 	public static void register(Javalin app)
 	{
@@ -52,7 +51,7 @@ public class DeletionHandler extends Object implements Handler
 				{
 					ctx.status(axp.getStatusCode());
 					ctx.result(axp.getMessage());
-					if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error(axp.getMessage());
+					if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error(axp.getMessage());
 					Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(axp.getStatusCode()),"error",axp.getMessage(),"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 				}
 			}
@@ -60,7 +59,7 @@ public class DeletionHandler extends Object implements Handler
 			{
 				ctx.status(404);
 				ctx.result("The specified key does not exist ("+fileObjKeyName+")!");
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("The specified key does not exist ("+fileObjKeyName+")!");
 				Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","404","error","object key does not exist","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 		}
@@ -68,7 +67,7 @@ public class DeletionHandler extends Object implements Handler
 		{
 			ctx.status(500);
 			ctx.result("request is not multipart/form-data ");
-			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("request is not multipart/form-data ");
 			Metrics.counter("s3storagefrontend.get", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","uuid not set","remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 		}
 	}

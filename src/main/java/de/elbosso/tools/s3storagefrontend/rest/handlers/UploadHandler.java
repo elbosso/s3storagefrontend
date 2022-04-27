@@ -11,17 +11,13 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.micrometer.core.instrument.Metrics;
-import org.apache.log4j.Priority;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 import java.util.UUID;
 
 public class UploadHandler extends Object implements Handler
 {
 	final static java.lang.String RESOURCENAME="upload";
-	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(UploadHandler.class);
-	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	private final static org.slf4j.Logger CLASS_LOGGER=org.slf4j.LoggerFactory.getLogger(UploadHandler.class);
+	private final static org.slf4j.Logger EXCEPTION_LOGGER=org.slf4j.LoggerFactory.getLogger("ExceptionCatcher");
 
 	public static void register(Javalin app)
 	{
@@ -29,7 +25,7 @@ public class UploadHandler extends Object implements Handler
 		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("added path for storing data: /"+RESOURCENAME+" (allowed methods: POST)");
 	}
 	@Override
-	public void handle(@NotNull Context ctx) throws Exception
+	public void handle(Context ctx) throws Exception
 	{
 		if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug("received upload request");
 		byte[] data=null;
@@ -56,7 +52,7 @@ public class UploadHandler extends Object implements Handler
 			}
 			else
 			{
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("no field named \"data\" found in form data . corrupted request?");
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("no field named \"data\" found in form data . corrupted request?");
 				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","data not found","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			if(ctx.formParam("s3ContentDisposition")!=null)
@@ -66,7 +62,7 @@ public class UploadHandler extends Object implements Handler
 			}
 			else
 			{
-				if (CLASS_LOGGER.isEnabledFor(Priority.WARN)) CLASS_LOGGER.warn("did not find s3ContentDisposition");
+				if (CLASS_LOGGER.isWarnEnabled()) CLASS_LOGGER.warn("did not find s3ContentDisposition");
 			}
 			if(ctx.formParam("s3ContentType")!=null)
 			{
@@ -75,12 +71,12 @@ public class UploadHandler extends Object implements Handler
 			}
 			else
 			{
-				if (CLASS_LOGGER.isEnabledFor(Priority.WARN)) CLASS_LOGGER.warn("did not find s3ContentType");
+				if (CLASS_LOGGER.isWarnEnabled()) CLASS_LOGGER.warn("did not find s3ContentType");
 			}
 		}
 		else
 		{
-			if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("request is not multipart/form-data ");
+			if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("request is not multipart/form-data ");
 			Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus","500","error","encoding","contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 		}
 		if(data!=null)
@@ -171,23 +167,23 @@ public class UploadHandler extends Object implements Handler
 			{
 				ctx.status(500);
 				ctx.result(ase.getMessage());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Caught an AmazonServiceException, which " + "means your request made it "
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Caught an AmazonServiceException, which " + "means your request made it "
 						+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Error Message:    " + ase.getMessage());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("HTTP Status Code: " + ase.getStatusCode());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("AWS Error Code:   " + ase.getErrorCode());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Error Type:       " + ase.getErrorType());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Request ID:       " + ase.getRequestId());
-				if(EXCEPTION_LOGGER.isEnabledFor(Priority.ERROR))EXCEPTION_LOGGER.error(ase.getMessage(),ase);
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Error Message:    " + ase.getMessage());
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("HTTP Status Code: " + ase.getStatusCode());
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("AWS Error Code:   " + ase.getErrorCode());
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Error Type:       " + ase.getErrorType());
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Request ID:       " + ase.getRequestId());
+				if(EXCEPTION_LOGGER.isErrorEnabled())EXCEPTION_LOGGER.error(ase.getMessage(),ase);
 				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ase.getMessage()!=null?ase.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			catch (AmazonClientException ace)
 			{
 				ctx.status(500);
 				ctx.result(ace.getMessage());
-				if(CLASS_LOGGER.isEnabledFor(Priority.ERROR))CLASS_LOGGER.error("Caught an AmazonClientException, which " + "means the client encountered " + "an internal error while trying to "
+				if(CLASS_LOGGER.isErrorEnabled())CLASS_LOGGER.error("Caught an AmazonClientException, which " + "means the client encountered " + "an internal error while trying to "
 						+ "communicate with S3, " + "such as not being able to access the network.");
-				if(EXCEPTION_LOGGER.isEnabledFor(Priority.ERROR))EXCEPTION_LOGGER.error(ace.getMessage(),ace);
+				if(EXCEPTION_LOGGER.isErrorEnabled())EXCEPTION_LOGGER.error(ace.getMessage(),ace);
 				Metrics.counter("s3storagefrontend.post", "resourcename","/"+RESOURCENAME,"httpstatus",java.lang.Integer.toString(ctx.status()),"error",(ace.getMessage()!=null?ace.getMessage():"NPE"),"contentType",contentType,"remoteAddr",ctx.req.getRemoteAddr(),"remoteHost",ctx.req.getRemoteHost(),"localAddr",ctx.req.getLocalAddr(),"localName",ctx.req.getLocalName()).increment();
 			}
 			catch(java.lang.Throwable t)

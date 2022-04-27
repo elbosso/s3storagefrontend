@@ -11,6 +11,27 @@ Changelog of this project.
         
 
         
+**change of repository location for de.elbosso artifacts**
+
+            
+
+[72250d7c632d1c7](https://github.com/elbosso/s3storagefrontend/commit/72250d7c632d1c7) Jürgen Key *2021-09-12 08:49:22*
+
+  
+**Merge branch 'master' of https://github.com/elbosso/s3storagefrontend**
+
+            
+
+[b3efb3dff97877b](https://github.com/elbosso/s3storagefrontend/commit/b3efb3dff97877b) Juergen Key *2021-05-08 06:27:01*
+
+  
+**added https**
+
+            
+
+[f3ed330a7190ed3](https://github.com/elbosso/s3storagefrontend/commit/f3ed330a7190ed3) Juergen Key *2021-05-08 06:26:35*
+
+  
 **logo tweaked**
 
             

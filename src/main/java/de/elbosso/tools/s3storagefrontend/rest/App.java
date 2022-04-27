@@ -1,5 +1,6 @@
 package de.elbosso.tools.s3storagefrontend.rest;
 
+import ch.qos.logback.classic.Level;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -14,7 +15,6 @@ import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.influx.InfluxMeterRegistry;
-import org.apache.log4j.Level;
 
 import java.util.Arrays;
 
@@ -22,8 +22,8 @@ public class App {
 	private final static java.lang.String OLDRULEID="delete rule";
 	private final static java.lang.String RULEID="de.elbosso.tools.s3storagefrontend.rest.App.RULEID";
 	private static final java.lang.String EXPIRATIONENVKEY="de.elbosso.tools.s3storagefrontend.rest.App.expirationInDays";
-	private final static org.apache.log4j.Logger CLASS_LOGGER=org.apache.log4j.Logger.getLogger(App.class);
-	private final static org.apache.log4j.Logger EXCEPTION_LOGGER=org.apache.log4j.Logger.getLogger("ExceptionCatcher");
+	private final static org.slf4j.Logger CLASS_LOGGER=org.slf4j.LoggerFactory.getLogger(App.class);
+	private final static org.slf4j.Logger EXCEPTION_LOGGER=org.slf4j.LoggerFactory.getLogger("ExceptionCatcher");
 
 	public static void main(String[] args)
 	{
@@ -54,8 +54,8 @@ public class App {
 		for(BucketLifecycleConfiguration.Rule rule:rules)
 		{
 			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(rule.getId());
-			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(rule.getExpirationDate());
-			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(rule.getExpirationInDays());
+			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(java.util.Objects.toString(rule.getExpirationDate()));
+			if(CLASS_LOGGER.isDebugEnabled())CLASS_LOGGER.debug(java.util.Objects.toString(rule.getExpirationInDays()));
 			if(RULEID.equals(rule.getId()))
 			{
 				expirationRule=rule;
