@@ -14,6 +14,42 @@ Changelog of this project.
         
 
         
+**fixes #9**
+
+            
+
+[4ae00c84b485c9b](https://github.com/elbosso/s3storagefrontend/commit/4ae00c84b485c9b) Juergen Key *2022-04-27 15:55:24*
+
+  
+
+ 
+        
+        
+### No issue
+        
+
+        
+**[maven-release-plugin] prepare for next development iteration**
+
+            
+
+[a00df87c7fb9e84](https://github.com/elbosso/s3storagefrontend/commit/a00df87c7fb9e84) Juergen Key *2022-04-27 15:55:10*
+
+  
+
+ 
+
+## 1.4.0
+    
+        
+            
+### GitHub [#9](https://github.com/elbosso/s3storagefrontend/issues/9) get rid of log4j and use the new bom dependency
+            
+            
+        
+        
+
+        
 **re #9**
 
             
@@ -29,6 +65,13 @@ Changelog of this project.
         
 
         
+**[maven-release-plugin] prepare release s3storagefrontend-1.4.0**
+
+            
+
+[744cbf39c66c8f3](https://github.com/elbosso/s3storagefrontend/commit/744cbf39c66c8f3) Juergen Key *2022-04-27 15:55:07*
+
+  
 **change of repository location for de.elbosso artifacts**
 
             
@@ -106,6 +149,20 @@ Changelog of this project.
             
 
 [4731ce962f58d72](https://github.com/elbosso/s3storagefrontend/commit/4731ce962f58d72) Jürgen Key *2021-03-21 10:01:48*
+
+  
+**release fxxx-up**
+
+            
+
+[e88693810f06ffb](https://github.com/elbosso/s3storagefrontend/commit/e88693810f06ffb) Jürgen Key *2021-03-20 09:45:40*
+
+  
+**[maven-release-plugin] prepare for next development iteration**
+
+            
+
+[e32706dd434b487](https://github.com/elbosso/s3storagefrontend/commit/e32706dd434b487) Jürgen Key *2021-03-20 09:45:05*
 
   
 
@@ -241,20 +298,6 @@ Changelog of this project.
             
 
 [0f13b307079a70b](https://github.com/elbosso/s3storagefrontend/commit/0f13b307079a70b) Jürgen Key *2021-03-20 16:55:33*
-
-  
-**release fxxx-up**
-
-            
-
-[e88693810f06ffb](https://github.com/elbosso/s3storagefrontend/commit/e88693810f06ffb) Jürgen Key *2021-03-20 09:45:40*
-
-  
-**[maven-release-plugin] prepare for next development iteration**
-
-            
-
-[e32706dd434b487](https://github.com/elbosso/s3storagefrontend/commit/e32706dd434b487) Jürgen Key *2021-03-20 09:45:05*
 
   
 
